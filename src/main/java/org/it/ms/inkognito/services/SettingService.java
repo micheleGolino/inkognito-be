@@ -1,10 +1,15 @@
 package org.it.ms.inkognito.services;
 
 import org.it.ms.inkognito.entities.Setting;
+import org.it.ms.inkognito.dto.SettingDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SettingService {
@@ -53,5 +58,24 @@ public class SettingService {
 		}
 		setting.delete();
 		return Response.ok("Setting " + id + " deleted.").build();
+	}
+
+	public List<SettingDTO> findByUserId(BigInteger userId) {
+		return Setting.list("Setting.findByUserId", userId)
+				.stream()
+				.map(s -> toDTO((Setting) s))
+				.collect(Collectors.toList());
+	}
+
+	private SettingDTO toDTO(Setting s) {
+		return new SettingDTO(
+			s.getId(),
+			s.getUserId(),
+			s.getLanguage(),
+			s.getTheme(),
+			s.getPushNotificationsEnabled(),
+			s.getNote(),
+			s.getDateInsert()
+		);
 	}
 }

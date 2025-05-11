@@ -1,10 +1,15 @@
 package org.it.ms.inkognito.services;
 
 import org.it.ms.inkognito.entities.Preference;
+import org.it.ms.inkognito.dto.PreferenceDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PreferenceService {
@@ -54,5 +59,25 @@ public class PreferenceService {
         }
         preference.delete();
         return Response.ok("Preference " + id + " deleted.").build();
+    }
+
+    public List<PreferenceDTO> findByUserId(BigInteger userId) {
+        return Preference.list("Preference.findByUserId", userId)
+                .stream()
+                .map(p -> toDTO((Preference) p))
+                .collect(Collectors.toList());
+    }
+
+    private PreferenceDTO toDTO(Preference p) {
+        return new PreferenceDTO(
+            p.getId(),
+            p.getUserId(),
+            p.getDesiredGender(),
+            p.getMaxDistance(),
+            p.getMinAge(),
+            p.getMaxAge(),
+            p.getNote(),
+            p.getDateInsert()
+        );
     }
 }

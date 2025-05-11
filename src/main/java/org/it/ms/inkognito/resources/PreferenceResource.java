@@ -1,11 +1,13 @@
 package org.it.ms.inkognito.resources;
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.it.ms.inkognito.entities.Preference;
 import org.it.ms.inkognito.services.PreferenceService;
+import org.it.ms.inkognito.dto.PreferenceDTO;
 
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
@@ -68,5 +70,11 @@ public class PreferenceResource {
 	@APIResponse(responseCode = "404", description = "Preference not found")
 	public Response deletePreference(@PathParam("id") Long id) {
 		return preferenceService.deletePreference(id);
+	}
+
+	@GET
+	@Path("/by-user/{userId}")
+	public List<PreferenceDTO> getByUserId(@PathParam("userId") BigInteger userId) {
+		return preferenceService.findByUserId(userId);
 	}
 }

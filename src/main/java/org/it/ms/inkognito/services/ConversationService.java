@@ -1,6 +1,10 @@
 package org.it.ms.inkognito.services;
 
 import org.it.ms.inkognito.entities.Conversation;
+import org.it.ms.inkognito.dto.ConversationDTO;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -51,5 +55,37 @@ public class ConversationService {
 		}
 		conversation.delete();
 		return Response.ok("Conversation " + id + " deleted.").build();
+	}
+
+	public List<ConversationDTO> findByUser1Id(BigInteger user1Id) {
+		return Conversation.list("user1Id", user1Id)
+				.stream()
+				.map(c -> toDTO((Conversation) c))
+				.collect(Collectors.toList());
+	}
+
+	public List<ConversationDTO> findByUser2Id(BigInteger user2Id) {
+		return Conversation.list("user2Id", user2Id)
+				.stream()
+				.map(c -> toDTO((Conversation) c))
+				.collect(Collectors.toList());
+	}
+
+	public ConversationDTO findBetweenUsers(BigInteger userA, BigInteger userB) {
+		return Conversation.find("Conversation.findBetweenUsers", 
+				java.util.Map.of("userA", userA, "userB", userB))
+				.firstResultOptional()
+				.map(c -> toDTO((Conversation) c))
+				.orElse(null);
+	}
+
+	private ConversationDTO toDTO(Conversation c) {
+		return new ConversationDTO(
+			c.getId(),
+			c.getUser1Id(),
+			c.getUser2Id(),
+			c.getNote(),
+			c.getDateInsert()
+		);
 	}
 }

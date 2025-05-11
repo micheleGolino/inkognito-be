@@ -1,10 +1,14 @@
 package org.it.ms.inkognito.services;
 
 import org.it.ms.inkognito.entities.Interest;
+import org.it.ms.inkognito.dto.InterestDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class InterestService {
@@ -51,5 +55,29 @@ public class InterestService {
 		}
 		interest.delete();
 		return Response.ok("Interest " + id + " deleted.").build();
+	}
+
+	public List<InterestDTO> findByName(String name) {
+		return Interest.list("Interest.findByName", name)
+				.stream()
+				.map(i -> toDTO((Interest) i))
+				.collect(Collectors.toList());
+	}
+
+	public List<InterestDTO> findAllOrdered() {
+		return Interest.list("Interest.findAllOrdered")
+				.stream()
+				.map(i -> toDTO((Interest) i))
+				.collect(Collectors.toList());
+	}
+
+	private InterestDTO toDTO(Interest i) {
+		return new InterestDTO(
+			i.getId(),
+			i.getName(),
+			i.getDescription(),
+			i.getNote(),
+			i.getDateInsert()
+		);
 	}
 }

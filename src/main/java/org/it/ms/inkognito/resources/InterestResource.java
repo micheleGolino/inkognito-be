@@ -6,6 +6,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.it.ms.inkognito.entities.Interest;
 import org.it.ms.inkognito.services.InterestService;
+import org.it.ms.inkognito.dto.InterestDTO;
 
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
@@ -68,5 +69,17 @@ public class InterestResource {
 	@APIResponse(responseCode = "404", description = "Interest not found")
 	public Response deleteInterest(@PathParam("id") Long id) {
 		return interestService.deleteInterest(id);
+	}
+
+	@GET
+	@Path("/by-name/{name}")
+	public List<InterestDTO> getByName(@PathParam("name") String name) {
+		return interestService.findByName(name);
+	}
+
+	@GET
+	@Path("/ordered")
+	public List<InterestDTO> getAllOrdered() {
+		return interestService.findAllOrdered();
 	}
 }

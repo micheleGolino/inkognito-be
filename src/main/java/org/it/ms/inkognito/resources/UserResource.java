@@ -5,6 +5,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.it.ms.inkognito.entities.User;
 import org.it.ms.inkognito.services.UserService;
+import org.it.ms.inkognito.dto.UserDTO;
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -59,5 +60,17 @@ public class UserResource {
     @APIResponse(responseCode = "404", description = "User not found")
     public Response deleteUser(@PathParam("id") Long id) {
         return usrService.deleteUser(id);
+    }
+
+    @GET
+    @Path("/by-email/{email}")
+    public UserDTO getByEmail(@PathParam("email") String email) {
+        return usrService.findByEmail(email);
+    }
+
+    @GET
+    @Path("/by-username/{username}")
+    public UserDTO getByUsername(@PathParam("username") String username) {
+        return usrService.findByUsername(username);
     }
 }

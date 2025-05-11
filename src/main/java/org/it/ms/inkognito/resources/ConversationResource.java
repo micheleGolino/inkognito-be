@@ -1,10 +1,12 @@
 package org.it.ms.inkognito.resources;
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.it.ms.inkognito.entities.Conversation;
+import org.it.ms.inkognito.dto.ConversationDTO;
 import org.it.ms.inkognito.services.ConversationService;
 
 import io.quarkus.panache.common.Sort;
@@ -68,5 +70,23 @@ public class ConversationResource {
 	@APIResponse(responseCode = "404", description = "Conversation not found")
 	public Response deleteConversation(@PathParam("id") Long id) {
 		return conversationService.deleteConversation(id);
+	}
+
+	@GET
+	@Path("/by-user1/{user1Id}")
+	public List<ConversationDTO> getByUser1Id(@PathParam("user1Id") BigInteger user1Id) {
+		return conversationService.findByUser1Id(user1Id);
+	}
+
+	@GET
+	@Path("/by-user2/{user2Id}")
+	public List<ConversationDTO> getByUser2Id(@PathParam("user2Id") BigInteger user2Id) {
+		return conversationService.findByUser2Id(user2Id);
+	}
+
+	@GET
+	@Path("/between/{userA}/{userB}")
+	public ConversationDTO getBetweenUsers(@PathParam("userA") BigInteger userA, @PathParam("userB") BigInteger userB) {
+		return conversationService.findBetweenUsers(userA, userB);
 	}
 }

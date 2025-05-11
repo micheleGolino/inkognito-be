@@ -1,11 +1,13 @@
 package org.it.ms.inkognito.resources;
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.it.ms.inkognito.entities.Message;
 import org.it.ms.inkognito.services.MessageService;
+import org.it.ms.inkognito.dto.MessageDTO;
 
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
@@ -68,5 +70,17 @@ public class MessageResource {
     @APIResponse(responseCode = "404", description = "Message not found")
     public Response deleteMessage(@PathParam("id") Long id) {
         return messageService.deleteMessage(id);
+    }
+
+    @GET
+    @Path("/by-conversation/{conversationId}")
+    public List<MessageDTO> getByConversationId(@PathParam("conversationId") BigInteger conversationId) {
+        return messageService.findByConversationId(conversationId);
+    }
+
+    @GET
+    @Path("/by-sender/{senderId}")
+    public List<MessageDTO> getBySenderId(@PathParam("senderId") BigInteger senderId) {
+        return messageService.findBySenderId(senderId);
     }
 }

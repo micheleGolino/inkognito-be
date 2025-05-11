@@ -1,9 +1,11 @@
 package org.it.ms.inkognito.resources;
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.it.ms.inkognito.dto.SubscriptionDTO;
 import org.it.ms.inkognito.entities.Subscription;
 import org.it.ms.inkognito.services.SubscriptionService;
 
@@ -68,5 +70,11 @@ public class SubscriptionResource {
 	@APIResponse(responseCode = "404", description = "Subscription not found")
 	public Response deleteSubscription(@PathParam("id") Long id) {
 		return subscriptionService.deleteSubscription(id);
+	}
+
+	@GET
+	@Path("/by-user/{userId}")
+	public List<SubscriptionDTO> getByUserId(@PathParam("userId") BigInteger userId) {
+		return subscriptionService.findByUserId(userId);
 	}
 }

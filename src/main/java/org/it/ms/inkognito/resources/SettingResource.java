@@ -1,11 +1,13 @@
 package org.it.ms.inkognito.resources;
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.it.ms.inkognito.entities.Setting;
 import org.it.ms.inkognito.services.SettingService;
+import org.it.ms.inkognito.dto.SettingDTO;
 
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
@@ -68,5 +70,11 @@ public class SettingResource {
 	@APIResponse(responseCode = "404", description = "Setting not found")
 	public Response deleteSetting(@PathParam("id") Long id) {
 		return settingService.deleteSetting(id);
+	}
+
+	@GET
+	@Path("/by-user/{userId}")
+	public List<SettingDTO> getByUserId(@PathParam("userId") BigInteger userId) {
+		return settingService.findByUserId(userId);
 	}
 }

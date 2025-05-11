@@ -26,10 +26,10 @@ public class UserInterestId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "user_id")
-	@Schema(description = "User identifier", example = "1")
+	@Schema(description = "User identifier")
 	private BigInteger userId;
 
 	@Column(name = "interest_id")
-	@Schema(description = "Interest identifier", example = "1")
+	@Schema(description = "Interest identifier")
 	private BigInteger interestId;
 }

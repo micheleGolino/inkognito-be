@@ -1,10 +1,15 @@
 package org.it.ms.inkognito.services;
 
 import org.it.ms.inkognito.entities.Subscription;
+import org.it.ms.inkognito.dto.SubscriptionDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SubscriptionService {
@@ -53,5 +58,24 @@ public class SubscriptionService {
 		}
 		subscription.delete();
 		return Response.ok("Subscription " + id + " deleted.").build();
+	}
+
+	public List<SubscriptionDTO> findByUserId(BigInteger userId) {
+		return Subscription.list("Subscription.findByUserId", userId)
+				.stream()
+				.map(s -> toDTO((Subscription) s))
+				.collect(Collectors.toList());
+	}
+
+	private SubscriptionDTO toDTO(Subscription s) {
+		return new SubscriptionDTO(
+			s.getId(),
+			s.getUserId(),
+			s.getSubscriptionType(),
+			s.getStartDate(),
+			s.getEndDate(),
+			s.getNote(),
+			s.getDateInsert()
+		);
 	}
 }

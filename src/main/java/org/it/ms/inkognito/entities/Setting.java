@@ -11,12 +11,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NamedQuery(name = "Setting.findByUserId", query = "SELECT s FROM Setting s WHERE s.userId = :userId")
 @Schema(description = "Entity representing user settings")
 @Entity
 @Table(name = "settings")
@@ -29,42 +31,42 @@ public class Setting extends PanacheEntityBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	@Schema(description = "Unique identifier of the setting", example = "1")
+	@Schema(description = "Unique identifier of the setting")
 	private BigInteger id;
 
 	@Column(name = "user_id", nullable = false)
-	@Schema(description = "Identifier of the associated user", example = "1", required = true)
+	@Schema(description = "Identifier of the associated user")
 	private BigInteger userId;
 
 	@Column(name = "language")
-	@Schema(description = "Language code", example = "en")
+	@Schema(description = "Language code")
 	private String language;
 
 	@Column(name = "theme")
-	@Schema(description = "Theme preference", example = "dark")
+	@Schema(description = "Theme preference")
 	private String theme;
 
 	@Column(name = "push_notifications_enabled")
-	@Schema(description = "Flag indicating if push notifications are enabled", example = "true")
+	@Schema(description = "Flag indicating if push notifications are enabled")
 	private Boolean pushNotificationsEnabled;
 
 	@Column(name = "note")
-	@Schema(description = "Additional notes", example = "User prefers dark theme")
+	@Schema(description = "Additional notes")
 	private String note;
 
 	@Column(name = "date_insert")
-	@Schema(description = "Date of insertion", example = "2025-03-02T10:15:30")
+	@Schema(description = "Date of insertion")
 	private LocalDateTime dateInsert;
 
 	@Column(name = "date_update")
-	@Schema(description = "Date of last update", example = "2025-03-02T10:15:30")
+	@Schema(description = "Date of last update")
 	private LocalDateTime dateUpdate;
 
 	@Column(name = "user_insert")
-	@Schema(description = "User who inserted the record", example = "system")
+	@Schema(description = "User who inserted the record")
 	private String userInsert;
 
 	@Column(name = "user_update")
-	@Schema(description = "User who last updated the record", example = "admin")
+	@Schema(description = "User who last updated the record")
 	private String userUpdate;
 }

@@ -1,9 +1,11 @@
 package org.it.ms.inkognito.resources;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.it.ms.inkognito.dto.UserInterestDTO;
 import org.it.ms.inkognito.entities.UserInterest;
 import org.it.ms.inkognito.services.UserInterestService;
 
@@ -63,5 +65,17 @@ public class UserInterestResource {
 	public Response deleteUserInterest(@PathParam("userId") BigInteger userId,
 			@PathParam("interestId") BigInteger interestId) {
 		return userInterestService.deleteUserInterest(userId, interestId);
+	}
+
+	@GET
+	@Path("/by-user/{userId}")
+	public List<UserInterestDTO> getByUserId(@PathParam("userId") BigInteger userId) {
+		return userInterestService.findByUserId(userId);
+	}
+
+	@GET
+	@Path("/by-interest/{interestId}")
+	public List<UserInterestDTO> getByInterestId(@PathParam("interestId") BigInteger interestId) {
+		return userInterestService.findByInterestId(interestId);
 	}
 }
